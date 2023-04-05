@@ -38,10 +38,9 @@ class Discussion:
                     date_obj = datetime.strptime(date, r"%d/%m/%Y, %H:%M")
                 except ValueError:
                     try :
-                        date_obj = datetime.strptime(date, r"%d.%m.%y %H:%M:%S")
+                        date_obj = datetime.strptime(date, r"%d.%m.%y, %I:%M:%S %p")
                     except ValueError : 
-                        date_obj = datetime.str
-                        
+                        date_obj = datetime.strptime(date, r"%d.%m.%y %H:%M:%S")
                 dates.append(date_obj)
                 names.append(name)
                 
