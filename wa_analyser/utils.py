@@ -92,7 +92,7 @@ def get_infos(df: pd.DataFrame) -> dict:
     infos["Meilleure heure (h)"] = round(best_hour(df), 1)
     infos["Caractère/message"] = round(caracter_per_messages(df), 1)
     infos["Nbre médias (audios compris)"] = count_medias(df)
-    infos["Sentiment (entre -1 et +1)"] = round(get_sentiment_mean(df), 3)
+    infos["Polarité entre -1 (négatif) et +1 (positif))"] = round(get_sentiment_mean(df), 3)
     return infos
 
 

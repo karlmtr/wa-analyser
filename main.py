@@ -126,6 +126,3 @@ if __name__ == "__main__":
     files = get_files("data")
     with concurrent.futures.ProcessPoolExecutor() as exec:
         results = [exec.submit(main, file) for file in files]
-    # for file in files:
-    #     # main(pathlib.Path("data/test.txt"))
-    #     main(file)
