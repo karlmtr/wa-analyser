@@ -4,6 +4,10 @@ import pathlib
 import datetime
 from glob import glob
 import os
+from textblob import Blobber
+from textblob_fr import PatternTagger, PatternAnalyzer
+
+tb = Blobber(pos_tagger=PatternTagger(), analyzer=PatternAnalyzer())
 
 
 def week_format(df: pd.DataFrame):
@@ -88,6 +92,7 @@ def get_infos(df: pd.DataFrame) -> dict:
     infos["Meilleure heure (h)"] = round(best_hour(df), 1)
     infos["Caractère/message"] = round(caracter_per_messages(df), 1)
     infos["Nbre médias (audios compris)"] = count_medias(df)
+    infos["Sentiment (entre -1 et +1)"] = round(get_sentiment_mean(df), 3)
     return infos
 
 
@@ -95,3 +100,14 @@ def caracter_per_messages(df: pd.DataFrame):
     nb_caracters = df["content"].str.len().sum()
     nb_message = len(df["content"])
     return nb_caracters / nb_message
+
+
+def get_sentiment_mean(df: pd.DataFrame):
+    get_sent = np.vectorize(apply_sentiment_alg)
+    mean = np.mean(get_sent(df["content"]))
+    return mean
+
+
+def apply_sentiment_alg(message: str):
+    blob = tb(message)
+    return blob.sentiment[0]
