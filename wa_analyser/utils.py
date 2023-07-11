@@ -92,7 +92,7 @@ def get_infos(df: pd.DataFrame) -> dict:
     infos["Meilleure heure (h)"] = round(best_hour(df), 1)
     infos["Caractère/message"] = round(caracter_per_messages(df), 1)
     infos["Nbre médias (audios compris)"] = count_medias(df)
-    infos["Polarité entre -1 (négatif) et +1 (positif))"] = round(get_sentiment_mean(df), 3)
+    infos["Polarité entre -1 (négatif) et +1 (positif))"] = round(get_sentiment(df).mean(), 3)
     return infos
 
 
@@ -102,12 +102,22 @@ def caracter_per_messages(df: pd.DataFrame):
     return nb_caracters / nb_message
 
 
-def get_sentiment_mean(df: pd.DataFrame):
+def get_sentiment(df: pd.DataFrame):
     get_sent = np.vectorize(apply_sentiment_alg)
-    mean = np.mean(get_sent(df["content"]))
-    return mean
+    return get_sent(df["content"])
 
 
 def apply_sentiment_alg(message: str):
     blob = tb(message)
     return blob.sentiment[0]
+
+
+def timeseries_binarize(df : pd.DataFrame, freq : str = "M"):
+    """
+    Binarize a dataframe with a given frequency
+    """
+    df["sentiments"] = get_sentiment(df)
+    df = df.set_index("date")
+    df = df.resample(freq).mean(numeric_only=True)
+    df = df.reset_index()
+    return df

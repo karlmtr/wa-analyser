@@ -14,3 +14,9 @@ Les instructions sont valables sur Mac et Linux, ceux sur Windows, à vos risque
 4. Mettre les disscusions sous format texte dans le dossier `data/`
 5. Mettre le script `./run.sh` en exécutable : `chmod a+x run.sh`
 6. Créer les graphiques en lançant le script: `./run.sh`
+
+
+
+## TODOs
+
+- [ ] Améliorer le graphique de messages par jour : `| lundi | mardi | mercredi | jeudi | ...`

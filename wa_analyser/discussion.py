@@ -40,7 +40,10 @@ class Discussion:
                     try :
                         date_obj = datetime.strptime(date, r"%d.%m.%y, %I:%M:%S %p")
                     except ValueError : 
-                        date_obj = datetime.strptime(date, r"%d.%m.%y %H:%M:%S")
+                        try : 
+                            date_obj = datetime.strptime(date, r"%d.%m.%y %H:%M:%S")
+                        except ValueError :
+                            date_obj = datetime.strptime(date, r"%d.%m.%y, %H:%M")
                 dates.append(date_obj)
                 names.append(name)
                 

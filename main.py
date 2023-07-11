@@ -14,10 +14,10 @@ def create_document(df: pd.DataFrame, specific_user=None):
 
     short_users = [user.split(" ")[0] for user in users]
     if not bigGroup:
-        fig, (ax, ax1, ax4, ax2, ax3) = plt.subplots(nrows=5, ncols=1, figsize=(15, 20))
+        fig, (ax, ax1, ax4, ax2, ax3, ax5) = plt.subplots(nrows=6, ncols=1, figsize=(20, 20))
         fig.suptitle(f"{' & '.join(short_users)}")
     else:
-        fig, (ax, ax1, ax4, ax2, ax3) = plt.subplots(nrows=5, ncols=1, figsize=(30, 40))
+        fig, (ax, ax1, ax4, ax2, ax3, ax5) = plt.subplots(nrows=6, ncols=1, figsize=(30, 100))
 
     ax1.set(
         title="Message distrib. / année",
@@ -44,12 +44,19 @@ def create_document(df: pd.DataFrame, specific_user=None):
         ("lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche")
     )
 
+    ax5.set(
+        title="Polarité en fonction du temps",
+        ylabel="polarité",
+        xlabel="temps",
+    )
+    
     ax.axis(False)
     MIN_Y, MAX_Y = ax.get_ylim()
     MIN_Y, MAX_Y = MIN_Y * 0.9, MAX_Y * 0.9  # padding
     MIN_X, MAX_X = ax.get_xlim()
-
     if not bigGroup:
+        df_sent = timeseries_binarize(df,freq="W")
+        ax5.plot(df_sent["date"],df_sent["sentiments"])
         timedeltas, who_created = who_creates_new_discussion(df)
         average_time_response = average_time_between_response(df)
         for i, user in enumerate(users):
